@@ -89,7 +89,7 @@
           </div>
           <div class="flex items-center space-x-2">
             <span id="news-status" class="text-xs text-gray-400">Connected</span>
-            <button onclick="triggerManualFetch()" class="bg-accentBlue hover:bg-blue-600 text-white text-xs px-2.5 py-1 rounded flex items-center gap-1 transition">
+            <button onclick="fetchLatestNews()" class="bg-accentBlue hover:bg-blue-600 text-white text-xs px-2.5 py-1 rounded flex items-center gap-1 transition">
               <i id="refresh-icon" class="fa-solid fa-rotate-right"></i> Refresh
             </button>
           </div>
@@ -150,7 +150,6 @@
     let dailyArchiveItems = [];
     let currentCurrencyFilter = 'ALL';
 
-    // Default historical baseline for today's session if fresh fetch is empty
     const defaultTodaySession = [
       { title: "FOMC Policy Outlook: Federal Reserve Monitors Treasury Yields & Inflation Benchmarks", link: "https://www.reuters.com/markets/us/", pubDate: new Date(Date.now() - 1800000), currencies: ["USD"] },
       { title: "ECB Deposit Rate Expectations & Eurozone Composite PMI Flash Releases", link: "https://www.reuters.com/markets/europe/", pubDate: new Date(Date.now() - 3600000), currencies: ["EUR"] },
@@ -173,7 +172,6 @@
       const storedDateKey = localStorage.getItem('trevorc_session_date');
 
       if (storedDateKey !== currentDateKey) {
-        // Midnight UTC rollover reached: Clear archive for the new session
         localStorage.removeItem('trevorc_daily_archive');
         localStorage.setItem('trevorc_session_date', currentDateKey);
         dailyArchiveItems = defaultTodaySession;
@@ -183,7 +181,6 @@
     function initializeTerminal() {
       checkMidnightReset();
 
-      // Load daily archive from memory or default session
       const savedArchive = localStorage.getItem('trevorc_daily_archive');
       if (savedArchive) {
         try {
@@ -195,7 +192,6 @@
         dailyArchiveItems = defaultTodaySession;
       }
 
-      // Initial live feed state
       liveNewsItems = dailyArchiveItems.slice(0, 4);
       renderAll();
       fetchLatestNews();
@@ -252,7 +248,6 @@
       if (freshItems.length > 0) {
         liveNewsItems = freshItems.slice(0, 6);
 
-        // Send items into the Daily Archive without duplicates
         const combinedArchive = [...freshItems, ...dailyArchiveItems];
         const seen = new Set();
         dailyArchiveItems = combinedArchive.filter(item => {
@@ -269,10 +264,6 @@
       const now = new Date();
       status.innerText = `Updated ${now.toLocaleTimeString('en-US', { hour12: false })}`;
       icon.classList.remove('fa-spin');
-    }
-
-    function triggerManualFetch() {
-      fetchLatestNews();
     }
 
     function renderAll() {
