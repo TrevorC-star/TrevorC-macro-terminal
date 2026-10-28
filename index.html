@@ -39,7 +39,7 @@
       <i class="fa-solid font-bold text-xl text-accentBlue fa-satellite-dish"></i>
       <h1 class="text-xl font-bold tracking-wider text-white">TREVORC <span class="text-accentBlue">MACRO TERMINAL</span></h1>
       <span class="bg-neonRed/20 text-neonRed text-xs font-semibold px-2.5 py-0.5 rounded border border-neonRed/30 animate-pulse flex items-center gap-1">
-        <span class="w-2 h-2 rounded-full bg-neonRed"></span> LIVE WIRE
+        <span class="w-2 h-2 rounded-full bg-neonRed"></span> DUAL-WIRE ACTIVE
       </span>
     </div>
 
@@ -63,7 +63,7 @@
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between text-sm">
       <div class="flex items-center space-x-2">
         <i class="fa-solid fa-clock text-neonRed"></i>
-        <span class="font-bold text-white uppercase tracking-wide">Next 00:00 UTC Session Rollover:</span>
+        <span class="font-bold text-white uppercase tracking-wide">Next 00:00 UTC Session Rollover & Archive Reset:</span>
       </div>
       <div class="flex items-center space-x-4">
         <span class="text-xs text-gray-400">Time Remaining:</span>
@@ -77,26 +77,42 @@
   <!-- Main Grid Layout -->
   <main class="flex-grow p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- LEFT COLUMN: Live Fundamental Wire Stream -->
+    <!-- LEFT COLUMN: Dual Wire Setup (Live Stream + Daily Session Archive) -->
     <section class="lg:col-span-7 flex flex-col space-y-6">
-      <div class="bg-panelBg border border-borderDark rounded-lg p-5 flex-grow flex flex-col">
-        <div class="flex justify-between items-center mb-4 pb-3 border-b border-borderDark">
+      
+      <!-- Panel 1: Live Breaking Wire -->
+      <div class="bg-panelBg border border-borderDark rounded-lg p-5 flex flex-col">
+        <div class="flex justify-between items-center mb-3 pb-2 border-b border-borderDark">
           <div class="flex items-center space-x-2">
             <i class="fa-solid fa-bolt text-accentBlue"></i>
-            <h2 class="text-lg font-bold text-white">Live Fundamental Headline Wire</h2>
+            <h2 class="text-base font-bold text-white">Live Breaking Fundamental Wire</h2>
           </div>
           <div class="flex items-center space-x-2">
             <span id="news-status" class="text-xs text-gray-400">Connected</span>
-            <button onclick="fetchLatestNews(true)" class="bg-accentBlue hover:bg-blue-600 text-white text-xs px-2.5 py-1 rounded flex items-center gap-1 transition">
+            <button onclick="triggerManualFetch()" class="bg-accentBlue hover:bg-blue-600 text-white text-xs px-2.5 py-1 rounded flex items-center gap-1 transition">
               <i id="refresh-icon" class="fa-solid fa-rotate-right"></i> Refresh
             </button>
           </div>
         </div>
-
-        <div id="news-feed-container" class="space-y-3 max-h-[620px] overflow-y-auto pr-2 flex-grow">
-          <!-- Populated by JS -->
+        <div id="live-feed-container" class="space-y-2 max-h-[260px] overflow-y-auto pr-2">
+          <!-- Live items populated via JS -->
         </div>
       </div>
+
+      <!-- Panel 2: Daily Session Archive (Resets at 00:00 UTC) -->
+      <div class="bg-panelBg border border-borderDark rounded-lg p-5 flex flex-col">
+        <div class="flex justify-between items-center mb-3 pb-2 border-b border-borderDark">
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-box-archive text-neonAmber"></i>
+            <h2 class="text-base font-bold text-white">Daily Session Archive (Resets at 00:00 UTC)</h2>
+          </div>
+          <span class="text-xs text-neonAmber font-bold bg-neonAmber/10 px-2 py-0.5 rounded border border-neonAmber/20">Today's Log</span>
+        </div>
+        <div id="archive-feed-container" class="space-y-2 max-h-[300px] overflow-y-auto pr-2">
+          <!-- Daily archive items populated via JS -->
+        </div>
+      </div>
+
     </section>
 
     <!-- RIGHT COLUMN: Economic Calendar -->
@@ -110,12 +126,12 @@
           <span class="text-xs text-neonRed font-bold bg-neonRed/10 px-2 py-0.5 rounded border border-neonRed/20">G8 High Impact</span>
         </div>
 
-        <div class="tradingview-widget-container" style="height: 520px; width: 100%;">
+        <div class="tradingview-widget-container" style="height: 570px; width: 100%;">
           <div class="tradingview-widget-container__widget"></div>
           <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
           {
             "width": "100%",
-            "height": "520",
+            "height": "570",
             "colorTheme": "dark",
             "isTransparent": true,
             "locale": "en",
@@ -130,11 +146,12 @@
   </main>
 
   <script>
-    let allNewsItems = [];
+    let liveNewsItems = [];
+    let dailyArchiveItems = [];
     let currentCurrencyFilter = 'ALL';
 
-    // Session intraday archive (Guarantees panel is populated with today's macro stories)
-    const todaySessionArchive = [
+    // Default historical baseline for today's session if fresh fetch is empty
+    const defaultTodaySession = [
       { title: "FOMC Policy Outlook: Federal Reserve Monitors Treasury Yields & Inflation Benchmarks", link: "https://www.reuters.com/markets/us/", pubDate: new Date(Date.now() - 1800000), currencies: ["USD"] },
       { title: "ECB Deposit Rate Expectations & Eurozone Composite PMI Flash Releases", link: "https://www.reuters.com/markets/europe/", pubDate: new Date(Date.now() - 3600000), currencies: ["EUR"] },
       { title: "Bank of England Monetary Policy Committee Prepares Inflation Commentary", link: "https://www.reuters.com/world/uk/", pubDate: new Date(Date.now() - 5400000), currencies: ["GBP"] },
@@ -151,31 +168,44 @@
       'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://news.google.com/rss/search?q=AUD+OR+NZD+OR+CAD+OR+CHF+currency+forex&hl=en-US&gl=US&ceid=US:en')
     ];
 
-    // Read stored memory cache instantly
-    function initializeNewsMemory() {
-      const stored = localStorage.getItem('trevorc_macro_items');
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          allNewsItems = parsed.map(item => ({ ...item, pubDate: new Date(item.pubDate) }));
-        } catch (e) {
-          console.warn("Could not parse local memory");
-        }
-      }
+    function checkMidnightReset() {
+      const currentDateKey = new Date().getUTCDate().toString();
+      const storedDateKey = localStorage.getItem('trevorc_session_date');
 
-      // If local storage is empty, populate with today's session archive
-      if (allNewsItems.length === 0) {
-        allNewsItems = todaySessionArchive;
+      if (storedDateKey !== currentDateKey) {
+        // Midnight UTC rollover reached: Clear archive for the new session
+        localStorage.removeItem('trevorc_daily_archive');
+        localStorage.setItem('trevorc_session_date', currentDateKey);
+        dailyArchiveItems = defaultTodaySession;
       }
-
-      renderNews();
     }
 
-    async function fetchLatestNews(isUserManualRefresh = false) {
+    function initializeTerminal() {
+      checkMidnightReset();
+
+      // Load daily archive from memory or default session
+      const savedArchive = localStorage.getItem('trevorc_daily_archive');
+      if (savedArchive) {
+        try {
+          dailyArchiveItems = JSON.parse(savedArchive).map(i => ({ ...i, pubDate: new Date(i.pubDate) }));
+        } catch (e) {
+          dailyArchiveItems = defaultTodaySession;
+        }
+      } else {
+        dailyArchiveItems = defaultTodaySession;
+      }
+
+      // Initial live feed state
+      liveNewsItems = dailyArchiveItems.slice(0, 4);
+      renderAll();
+      fetchLatestNews();
+    }
+
+    async function fetchLatestNews() {
       const status = document.getElementById('news-status');
       const icon = document.getElementById('refresh-icon');
       icon.classList.add('fa-spin');
-      status.innerText = "Checking live feeds...";
+      status.innerText = "Syncing live wire...";
 
       let freshItems = [];
 
@@ -203,9 +233,7 @@
                 if (fullText.includes('NZD') || fullText.includes('ZEALAND') || fullText.includes('RBNZ')) matchedCurrencies.push('NZD');
                 if (fullText.includes('CHF') || fullText.includes('SWISS') || fullText.includes('FRANC') || fullText.includes('SNB')) matchedCurrencies.push('CHF');
 
-                if (matchedCurrencies.length === 0) {
-                  matchedCurrencies.push('USD');
-                }
+                if (matchedCurrencies.length === 0) matchedCurrencies.push('USD');
 
                 freshItems.push({
                   title: title,
@@ -217,44 +245,52 @@
             });
           }
         } catch (e) {
-          console.warn("Proxy timeout:", apiUrl);
+          console.warn("Proxy connection skipped");
         }
       }
 
-      // Merge new stories into existing list without destroying earlier stories
       if (freshItems.length > 0) {
-        const combined = [...freshItems, ...allNewsItems];
+        liveNewsItems = freshItems.slice(0, 6);
+
+        // Send items into the Daily Archive without duplicates
+        const combinedArchive = [...freshItems, ...dailyArchiveItems];
         const seen = new Set();
-        
-        allNewsItems = combined.filter(item => {
+        dailyArchiveItems = combinedArchive.filter(item => {
           const duplicate = seen.has(item.title);
           seen.add(item.title);
           return !duplicate;
         });
 
-        // Persist to browser local storage
-        localStorage.setItem('trevorc_macro_items', JSON.stringify(allNewsItems.slice(0, 40)));
+        localStorage.setItem('trevorc_daily_archive', JSON.stringify(dailyArchiveItems.slice(0, 50)));
       }
 
-      allNewsItems.sort((a, b) => b.pubDate - a.pubDate);
-      renderNews();
+      renderAll();
 
       const now = new Date();
       status.innerText = `Updated ${now.toLocaleTimeString('en-US', { hour12: false })}`;
       icon.classList.remove('fa-spin');
     }
 
-    function renderNews() {
-      const container = document.getElementById('news-feed-container');
+    function triggerManualFetch() {
+      fetchLatestNews();
+    }
+
+    function renderAll() {
+      renderContainer('live-feed-container', liveNewsItems);
+      renderContainer('archive-feed-container', dailyArchiveItems);
+    }
+
+    function renderContainer(containerId, itemsArray) {
+      const container = document.getElementById(containerId);
       container.innerHTML = '';
 
-      let filtered = allNewsItems;
+      let filtered = itemsArray;
       if (currentCurrencyFilter !== 'ALL') {
-        filtered = allNewsItems.filter(item => item.currencies.includes(currentCurrencyFilter));
+        filtered = itemsArray.filter(item => item.currencies.includes(currentCurrencyFilter));
       }
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div class="text-center py-10 text-gray-500 font-mono text-sm">No stored headlines for ${currentCurrencyFilter} right now.</div>`;
+        container.innerHTML = `<div class="text-center py-6 text-gray-500 font-mono text-xs">No records found for ${currentCurrencyFilter}.</div>`;
         return;
       }
 
@@ -263,19 +299,16 @@
         const card = document.createElement('a');
         card.href = item.link;
         card.target = '_blank';
-        card.className = "block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue/60 transition group";
+        card.className = "block p-3 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue/60 transition group";
 
-        let currencyBadges = item.currencies.map(c => `<span class="bg-accentBlue/10 text-accentBlue border border-accentBlue/30 text-[10px] font-bold px-1.5 py-0.5 rounded">${c}</span>`).join(' ');
+        let currencyBadges = item.currencies.map(c => `<span class="bg-accentBlue/10 text-accentBlue border border-accentBlue/30 text-[9px] font-bold px-1.5 py-0.5 rounded">${c}</span>`).join(' ');
 
         card.innerHTML = `
-          <div class="flex justify-between items-center mb-1.5">
-            <div class="flex items-center space-x-1">
-              ${currencyBadges}
-            </div>
-            <span class="text-[11px] text-emerald-400 font-mono">${timeAgo}</span>
+          <div class="flex justify-between items-center mb-1">
+            <div class="flex items-center space-x-1">${currencyBadges}</div>
+            <span class="text-[10px] text-emerald-400 font-mono">${timeAgo}</span>
           </div>
-          <h3 class="text-sm font-semibold text-white group-hover:text-accentBlue transition leading-snug mb-1">${item.title}</h3>
-          <span class="text-[10px] text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-arrow-up-right-from-square text-[9px] mr-1"></i> Read Article</span>
+          <h3 class="text-xs font-semibold text-white group-hover:text-accentBlue transition leading-snug">${item.title}</h3>
         `;
 
         container.appendChild(card);
@@ -291,7 +324,7 @@
           btn.className = 'currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white';
         }
       });
-      renderNews();
+      renderAll();
     }
 
     function getTimeAgo(date) {
@@ -312,6 +345,7 @@
         const diff = targetDate.getTime() - now.getTime();
 
         if (diff <= 0) {
+          checkMidnightReset();
           document.getElementById('live-countdown').innerText = "00h 00m 00s";
           return;
         }
@@ -329,8 +363,7 @@
     }
 
     window.onload = function() {
-      initializeNewsMemory(); // Instantly displays persistent stories
-      fetchLatestNews();       // Pulls fresh updates
+      initializeTerminal();
       startCountdown();
       setInterval(fetchLatestNews, 60000);
     };
