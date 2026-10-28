@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrevorC Macro Live Terminal</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            terminalBg: '#0b0e14',
+            panelBg: '#131722',
+            borderDark: '#2a2e39',
+            neonGreen: '#089981',
+            neonRed: '#f23645',
+            neonAmber: '#ff9800',
+            accentBlue: '#2962ff'
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { background-color: #0b0e14; color: #d1d4dc; font-family: 'Inter', sans-serif; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0b0e14; }
+    ::-webkit-scrollbar-thumb { background: #2a2e39; border-radius: 3px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Navigation Header -->
+  <header class="bg-panelBg border-b border-borderDark px-6 py-4 flex flex-wrap justify-between items-center sticky top-0 z-50">
+    <div class="flex items-center space-x-3">
+      <i class="fa-solid font-bold text-xl text-accentBlue fa-satellite-dish"></i>
+      <h1 class="text-xl font-bold tracking-wider text-white">TREVORC <span class="text-accentBlue">MACRO TERMINAL</span></h1>
+      <span class="bg-neonRed/20 text-neonRed text-xs font-semibold px-2.5 py-0.5 rounded border border-neonRed/30 animate-pulse flex items-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-neonRed"></span> LIVE RED-FOLDER FEED
+      </span>
+    </div>
+
+    <!-- Currency Filter Badges -->
+    <div class="flex flex-wrap items-center gap-1.5 my-2 sm:my-0">
+      <span class="text-xs text-gray-400 font-medium mr-1">Focus Currencies:</span>
+      <button class="px-2.5 py-1 text-xs font-bold rounded bg-accentBlue text-white border border-accentBlue">ALL</button>
+      <button class="px-2 py-1 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:border-accentBlue">USD</button>
+      <button class="px-2 py-1 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:border-accentBlue">EUR</button>
+      <button class="px-2 py-1 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:border-accentBlue">GBP</button>
+      <button class="px-2 py-1 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:border-accentBlue">JPY</button>
+      <button class="px-2 py-1 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:border-accentBlue">CAD</button>
+      <button class="px-2 py-1 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:border-accentBlue">AUD</button>
+      <button class="px-2 py-1 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:border-accentBlue">NZD</button>
+      <button class="px-2 py-1 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:border-accentBlue">CHF</button>
+    </div>
+  </header>
+
+  <!-- High-Impact Live Countdown Banner -->
+  <section class="bg-gradient-to-r from-panelBg via-red-950/20 to-panelBg border-b border-borderDark px-6 py-3">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between text-sm">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-triangle-exclamation text-neonRed"></i>
+        <span class="font-bold text-white uppercase tracking-wide">Next Major Tier-1 Catalyst:</span>
+        <span id="next-event-title" class="text-gray-300 font-medium">FOMC Interest Rate Decision (USD)</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span class="text-xs text-gray-400">Release Target: <span class="text-white font-mono">20:00 CAT</span></span>
+        <div id="live-countdown" class="bg-neonRed/10 border border-neonRed/40 text-neonRed px-3 py-1 rounded font-mono font-bold text-sm tracking-widest">
+          --d --h --m --s
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Grid Dashboard -->
+  <main class="flex-grow p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT COLUMN: Live News Wire (7 Columns wide on Large Screens) -->
+    <section class="lg:col-span-7 flex flex-col space-y-6">
+      
+      <!-- Top Wire News Feed -->
+      <div class="bg-panelBg border border-borderDark rounded-lg p-5 flex-grow">
+        <div class="flex justify-between items-center mb-4 pb-3 border-b border-borderDark">
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-newspaper text-accentBlue"></i>
+            <h2 class="text-lg font-bold text-white">Live Fundamental Wire Stream</h2>
+          </div>
+          <span class="text-xs text-gray-400">Auto-refreshing (60s)</span>
+        </div>
+
+        <!-- Live RSS Feed Container -->
+        <div id="news-container" class="space-y-4 max-h-[650px] overflow-y-auto pr-2">
+          <!-- Dynamically Injected News Items Will Render Here -->
+          <div class="p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue/50 transition">
+            <div class="flex justify-between items-start mb-1">
+              <span class="text-xs font-bold text-accentBlue uppercase tracking-wider">[Reuters / USD]</span>
+              <span class="text-xs text-gray-500 font-mono">Just now</span>
+            </div>
+            <h3 class="text-sm font-semibold text-white mb-1">Federal Reserve Signals Caution on Rate Path Amid Persistent Services Inflation</h3>
+            <p class="text-xs text-gray-400">Dollar index stabilizes as market participants recalibrate expectations ahead of upcoming policy statements...</p>
+            <div class="mt-2 flex items-center justify-between">
+              <span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded border border-red-500/30 font-bold">HIGH IMPACT</span>
+              <a href="https://www.reuters.com" target="_blank" class="text-xs text-accentBlue hover:underline flex items-center gap-1">Source <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT COLUMN: Red Folder Forex Factory / TradingView High-Impact Calendar & X Feeds (5 Columns wide) -->
+    <section class="lg:col-span-5 flex flex-col space-y-6">
+      
+      <!-- Red Folder Economic Calendar -->
+      <div class="bg-panelBg border border-borderDark rounded-lg p-5">
+        <div class="flex justify-between items-center mb-4 pb-3 border-b border-borderDark">
+          <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-calendar-day text-neonRed"></i>
+            <h2 class="text-lg font-bold text-white">Red-Folder Economic Events</h2>
+          </div>
+          <span class="text-xs text-neonRed font-bold bg-neonRed/10 px-2 py-0.5 rounded border border-neonRed/20">High Impact Only</span>
+        </div>
+
+        <!-- TradingView Embedded High Impact Events Feed Filtered for G8 -->
+        <div class="tradingview-widget-container" style="height: 480px; width: 100%;">
+          <div class="tradingview-widget-container__widget"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+          {
+            "width": "100%",
+            "height": "480",
+            "colorTheme": "dark",
+            "isTransparent": true,
+            "locale": "en",
+            "importanceFilter": "1",
+            "currencyFilter": "USD,EUR,GBP,JPY,CAD,AUD,NZD,CHF"
+          }
+          </script>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Script: Real-time Countdown Engine -->
+  <script>
+    // Live Red-Folder Countdown Function
+    function startCountdown() {
+      // Example Target: Next major catalyst (Can be dynamically tied to API feed)
+      const targetDate = new Date();
+      targetDate.setHours(targetDate.getHours() + 18); // Simulated target for UI setup
+
+      function update() {
+        const now = new Date().getTime();
+        const diff = targetDate.getTime() - now;
+
+        if (diff <= 0) {
+          document.getElementById('live-countdown').innerText = "RELEASED / IN PROGRESS";
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('live-countdown').innerText = 
+          `${days}d ${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+      }
+
+      update();
+      setInterval(update, 1000);
+    }
+
+    startCountdown();
+  </script>
+</body>
+</html>
