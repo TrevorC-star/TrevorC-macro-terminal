@@ -39,13 +39,13 @@
       <i class="fa-solid font-bold text-xl text-accentBlue fa-satellite-dish"></i>
       <h1 class="text-xl font-bold tracking-wider text-white">TREVORC <span class="text-accentBlue">MACRO TERMINAL</span></h1>
       <span class="bg-neonRed/20 text-neonRed text-xs font-semibold px-2.5 py-0.5 rounded border border-neonRed/30 animate-pulse flex items-center gap-1">
-        <span class="w-2 h-2 rounded-full bg-neonRed"></span> LIVE FUNDAMENTAL WIRE
+        <span class="w-2 h-2 rounded-full bg-neonRed"></span> G8 FUNDAMENTAL WIRE
       </span>
     </div>
 
     <!-- Monitored Assets -->
     <div class="flex flex-wrap items-center gap-1.5 my-2 sm:my-0">
-      <span class="text-xs text-gray-400 font-medium mr-1">Assets:</span>
+      <span class="text-xs text-gray-400 font-medium mr-1">Filtered Currencies:</span>
       <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">USD</span>
       <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">EUR</span>
       <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">GBP</span>
@@ -57,13 +57,13 @@
     </div>
   </header>
 
-  <!-- Countdown Banner -->
+  <!-- Persistent Countdown Banner -->
   <section class="bg-gradient-to-r from-panelBg via-red-950/20 to-panelBg border-b border-borderDark px-6 py-3">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between text-sm">
       <div class="flex items-center space-x-2">
-        <i class="fa-solid fa-triangle-exclamation text-neonRed"></i>
-        <span class="font-bold text-white uppercase tracking-wide">Next Red-Folder Event:</span>
-        <span id="next-event-title" class="text-gray-300 font-medium">Major Central Bank Rate Decision / NFP Catalyst</span>
+        <i class="fa-solid fa-clock text-neonRed"></i>
+        <span class="font-bold text-white uppercase tracking-wide">Next Daily Session Rollover:</span>
+        <span class="text-gray-300 font-medium">00:00 UTC Baseline Anchor</span>
       </div>
       <div class="flex items-center space-x-4">
         <span class="text-xs text-gray-400">Time Remaining:</span>
@@ -77,78 +77,67 @@
   <!-- Main Terminal Layout -->
   <main class="flex-grow p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- LEFT COLUMN: Interactive Clickable Live News Feeds -->
+    <!-- LEFT COLUMN: Filtered G8 Currency Feeds -->
     <section class="lg:col-span-7 flex flex-col space-y-6">
       <div class="bg-panelBg border border-borderDark rounded-lg p-5 flex-grow flex flex-col">
         <div class="flex justify-between items-center mb-4 pb-3 border-b border-borderDark">
           <div class="flex items-center space-x-2">
-            <i class="fa-solid fa-newspaper text-accentBlue"></i>
-            <h2 class="text-lg font-bold text-white">Live Fundamental Wire & News Direct Links</h2>
+            <i class="fa-solid fa-filter text-accentBlue"></i>
+            <h2 class="text-lg font-bold text-white">G8 FX & Central Bank Feeds Direct</h2>
           </div>
-          <span class="text-xs text-gray-400">Click headers to open source feeds</span>
+          <span class="text-xs text-gray-400">Strictly Foreign Exchange Drivers</span>
         </div>
 
-        <!-- Clickable News Links Grid / Stream -->
         <div class="space-y-3 max-h-[600px] overflow-y-auto pr-2">
           
-          <!-- Reuters -->
-          <a href="https://www.reuters.com/markets/currencies/" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
+          <!-- Reuters Foreign Exchange Wire -->
+          <a href="https://www.reuters.com/site-search/?query=forex+central+bank+USD+EUR+GBP+JPY" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
             <div class="flex justify-between items-start mb-1">
-              <span class="text-xs font-bold text-accentBlue uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [REUTERS GLOBAL MARKETS]</span>
-              <span class="text-xs text-emerald-400 font-mono">Live Feed</span>
+              <span class="text-xs font-bold text-accentBlue uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [REUTERS FX & CENTRAL BANKS]</span>
+              <span class="text-xs text-emerald-400 font-mono">G8 Filter Active</span>
             </div>
-            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">Reuters FX & Central Bank Policy Wire</h3>
-            <p class="text-xs text-gray-400">Real-time macro wire covering G8 interest rate outlooks, liquidity flows, and geopolitical drivers.</p>
+            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">Reuters Forex & G8 Central Bank Policy Wire</h3>
+            <p class="text-xs text-gray-400">Strictly filtered for USD, EUR, GBP, JPY, CAD, AUD, NZD, CHF interest rate decisions and FX flows.</p>
           </a>
 
-          <!-- FinancialJuice -->
-          <a href="https://www.financialjuice.com" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
+          <!-- FinancialJuice FX Wire -->
+          <a href="https://www.financialjuice.com/home?tab=fx" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
             <div class="flex justify-between items-start mb-1">
-              <span class="text-xs font-bold text-neonAmber uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [FINANCIALJUICE BREAKING WIRE]</span>
-              <span class="text-xs text-emerald-400 font-mono">Streaming</span>
+              <span class="text-xs font-bold text-neonAmber uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [FINANCIALJUICE REAL-TIME FX]</span>
+              <span class="text-xs text-emerald-400 font-mono">Audio & Wire</span>
             </div>
-            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">Real-time Audio & Headline News Stream</h3>
-            <p class="text-xs text-gray-400">Instant audio alerts and headline aggregation for session liquidity sweeps and economic data releases.</p>
+            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">FinancialJuice FX Breaking Headlines</h3>
+            <p class="text-xs text-gray-400">Instant squawk and headline stream dedicated exclusively to Forex pairs and rate catalysts.</p>
           </a>
 
-          <!-- Bloomberg -->
+          <!-- Bloomberg Currencies -->
           <a href="https://www.bloomberg.com/markets/currencies" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
             <div class="flex justify-between items-start mb-1">
-              <span class="text-xs font-bold text-purple-400 uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [BLOOMBERG MARKETS]</span>
-              <span class="text-xs text-emerald-400 font-mono">Active</span>
+              <span class="text-xs font-bold text-purple-400 uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [BLOOMBERG CURRENCIES]</span>
+              <span class="text-xs text-emerald-400 font-mono">G8 Spot Rates</span>
             </div>
-            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">Bloomberg Currencies & Macro Analysis</h3>
-            <p class="text-xs text-gray-400">Institutional perspective on G8 sovereign debt, currency valuation, and macroeconomic trends.</p>
+            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">Bloomberg FX & Macro Valuation Feed</h3>
+            <p class="text-xs text-gray-400">G8 currency strength metrics, central bank expectations, and sovereign bond yield spreads.</p>
           </a>
 
-          <!-- Wall Street Journal -->
-          <a href="https://www.wsj.com/news/markets" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
-            <div class="flex justify-between items-start mb-1">
-              <span class="text-xs font-bold text-blue-400 uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [WALL STREET JOURNAL]</span>
-              <span class="text-xs text-emerald-400 font-mono">Active</span>
-            </div>
-            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">WSJ Markets & Economy Desk</h3>
-            <p class="text-xs text-gray-400">In-depth economic reports, inflation tracking, and Federal Reserve / Central Bank commentary.</p>
-          </a>
-
-          <!-- CNBC -->
+          <!-- CNBC Currencies Desk -->
           <a href="https://www.cnbc.com/currencies/" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
             <div class="flex justify-between items-start mb-1">
-              <span class="text-xs font-bold text-green-400 uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [CNBC CURRENCIES]</span>
-              <span class="text-xs text-emerald-400 font-mono">Active</span>
+              <span class="text-xs font-bold text-green-400 uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [CNBC FX DESK]</span>
+              <span class="text-xs text-emerald-400 font-mono">FX News Only</span>
             </div>
-            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">CNBC Global Currency Exchange & News</h3>
-            <p class="text-xs text-gray-400">Live market commentary, trading day updates, and cross-rate market volatility reports.</p>
+            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">CNBC Foreign Exchange & Dollar Index Drivers</h3>
+            <p class="text-xs text-gray-400">DXY movements, Fed speaker commentary, and major G8 cross-rate volatility updates.</p>
           </a>
 
-          <!-- Trading Economics -->
+          <!-- Trading Economics FX Calendar & Indicators -->
           <a href="https://tradingeconomics.com/currencies" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
             <div class="flex justify-between items-start mb-1">
-              <span class="text-xs font-bold text-amber-400 uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [TRADING ECONOMICS]</span>
-              <span class="text-xs text-emerald-400 font-mono">Active</span>
+              <span class="text-xs font-bold text-amber-400 uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [TRADING ECONOMICS FX]</span>
+              <span class="text-xs text-emerald-400 font-mono">G8 Indicators</span>
             </div>
-            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">Global Indicators & Economic Calendar Hub</h3>
-            <p class="text-xs text-gray-400">Comprehensive macroeconomic indicators, historical data charts, and forecast matrices.</p>
+            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">G8 Economic Indicators & Macro Statistics</h3>
+            <p class="text-xs text-gray-400">Direct access to inflation (CPI), employment (NFP), and GDP data across all 8 currencies.</p>
           </a>
 
         </div>
@@ -163,10 +152,9 @@
             <i class="fa-solid fa-calendar-day text-neonRed"></i>
             <h2 class="text-lg font-bold text-white">Red-Folder Economic Calendar</h2>
           </div>
-          <span class="text-xs text-neonRed font-bold bg-neonRed/10 px-2 py-0.5 rounded border border-neonRed/20">High Impact Only</span>
+          <span class="text-xs text-neonRed font-bold bg-neonRed/10 px-2 py-0.5 rounded border border-neonRed/20">G8 High Impact Only</span>
         </div>
 
-        <!-- TradingView Embedded High Impact Events Feed -->
         <div class="tradingview-widget-container" style="height: 520px; width: 100%;">
           <div class="tradingview-widget-container__widget"></div>
           <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
@@ -186,19 +174,16 @@
 
   </main>
 
-  <!-- Script: Fixed Persistent Countdown Timer -->
+  <!-- Script: Real-time UTC Session Countdown -->
   <script>
     function startCountdown() {
-      // Set target countdown to midnight UTC / next daily macro reset session
-      const now = new Date();
-      const targetDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
-
       function update() {
-        const currentTime = new Date().getTime();
-        const diff = targetDate.getTime() - currentTime;
+        const now = new Date();
+        const targetDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
+        const diff = targetDate.getTime() - now.getTime();
 
         if (diff <= 0) {
-          document.getElementById('live-countdown').innerText = "SESSION ROLLED OVER";
+          document.getElementById('live-countdown').innerText = "00h 00m 00s";
           return;
         }
 
