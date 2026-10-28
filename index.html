@@ -39,11 +39,11 @@
       <i class="fa-solid font-bold text-xl text-accentBlue fa-satellite-dish"></i>
       <h1 class="text-xl font-bold tracking-wider text-white">TREVORC <span class="text-accentBlue">MACRO TERMINAL</span></h1>
       <span class="bg-neonRed/20 text-neonRed text-xs font-semibold px-2.5 py-0.5 rounded border border-neonRed/30 animate-pulse flex items-center gap-1">
-        <span class="w-2 h-2 rounded-full bg-neonRed"></span> DUAL-WIRE ACTIVE
+        <span class="w-2 h-2 rounded-full bg-neonRed"></span> LIVE WIRE
       </span>
     </div>
 
-    <!-- Currency Filter Buttons -->
+    <!-- Individual G8 Currency Filter Buttons -->
     <div class="flex flex-wrap items-center gap-1.5">
       <span class="text-xs text-gray-400 font-medium mr-1">Filter Currency:</span>
       <button onclick="filterNews('ALL')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-accentBlue text-white border border-accentBlue" data-ccy="ALL">ALL</button>
@@ -63,7 +63,7 @@
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between text-sm">
       <div class="flex items-center space-x-2">
         <i class="fa-solid fa-clock text-neonRed"></i>
-        <span class="font-bold text-white uppercase tracking-wide">Next 00:00 UTC Session Rollover & Archive Reset:</span>
+        <span class="font-bold text-white uppercase tracking-wide">Next 00:00 UTC Session Rollover:</span>
       </div>
       <div class="flex items-center space-x-4">
         <span class="text-xs text-gray-400">Time Remaining:</span>
@@ -77,15 +77,13 @@
   <!-- Main Grid Layout -->
   <main class="flex-grow p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- LEFT COLUMN: Dual Wire Setup (Live Stream + Daily Session Archive) -->
+    <!-- LEFT COLUMN: Live Fundamental Wire -->
     <section class="lg:col-span-7 flex flex-col space-y-6">
-      
-      <!-- Panel 1: Live Breaking Wire -->
-      <div class="bg-panelBg border border-borderDark rounded-lg p-5 flex flex-col">
-        <div class="flex justify-between items-center mb-3 pb-2 border-b border-borderDark">
+      <div class="bg-panelBg border border-borderDark rounded-lg p-5 flex-grow flex flex-col">
+        <div class="flex justify-between items-center mb-4 pb-3 border-b border-borderDark">
           <div class="flex items-center space-x-2">
             <i class="fa-solid fa-bolt text-accentBlue"></i>
-            <h2 class="text-base font-bold text-white">Live Breaking Fundamental Wire</h2>
+            <h2 class="text-lg font-bold text-white">Live Fundamental Headline Wire</h2>
           </div>
           <div class="flex items-center space-x-2">
             <span id="news-status" class="text-xs text-gray-400">Connected</span>
@@ -94,25 +92,11 @@
             </button>
           </div>
         </div>
-        <div id="live-feed-container" class="space-y-2 max-h-[260px] overflow-y-auto pr-2">
+
+        <div id="news-feed-container" class="space-y-3 max-h-[620px] overflow-y-auto pr-2 flex-grow">
           <!-- Live items populated via JS -->
         </div>
       </div>
-
-      <!-- Panel 2: Daily Session Archive (Resets at 00:00 UTC) -->
-      <div class="bg-panelBg border border-borderDark rounded-lg p-5 flex flex-col">
-        <div class="flex justify-between items-center mb-3 pb-2 border-b border-borderDark">
-          <div class="flex items-center space-x-2">
-            <i class="fa-solid fa-box-archive text-neonAmber"></i>
-            <h2 class="text-base font-bold text-white">Daily Session Archive (Resets at 00:00 UTC)</h2>
-          </div>
-          <span class="text-xs text-neonAmber font-bold bg-neonAmber/10 px-2 py-0.5 rounded border border-neonAmber/20">Today's Log</span>
-        </div>
-        <div id="archive-feed-container" class="space-y-2 max-h-[300px] overflow-y-auto pr-2">
-          <!-- Daily archive items populated via JS -->
-        </div>
-      </div>
-
     </section>
 
     <!-- RIGHT COLUMN: Economic Calendar -->
@@ -126,12 +110,12 @@
           <span class="text-xs text-neonRed font-bold bg-neonRed/10 px-2 py-0.5 rounded border border-neonRed/20">G8 High Impact</span>
         </div>
 
-        <div class="tradingview-widget-container" style="height: 570px; width: 100%;">
+        <div class="tradingview-widget-container" style="height: 520px; width: 100%;">
           <div class="tradingview-widget-container__widget"></div>
           <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
           {
             "width": "100%",
-            "height": "570",
+            "height": "520",
             "colorTheme": "dark",
             "isTransparent": true,
             "locale": "en",
@@ -146,142 +130,103 @@
   </main>
 
   <script>
-    let liveNewsItems = [];
-    let dailyArchiveItems = [];
+    let allNewsItems = [];
     let currentCurrencyFilter = 'ALL';
 
-    const defaultTodaySession = [
-      { title: "FOMC Policy Outlook: Federal Reserve Monitors Treasury Yields & Inflation Benchmarks", link: "https://www.reuters.com/markets/us/", pubDate: new Date(Date.now() - 1800000), currencies: ["USD"] },
-      { title: "ECB Deposit Rate Expectations & Eurozone Composite PMI Flash Releases", link: "https://www.reuters.com/markets/europe/", pubDate: new Date(Date.now() - 3600000), currencies: ["EUR"] },
-      { title: "Bank of England Monetary Policy Committee Prepares Inflation Commentary", link: "https://www.reuters.com/world/uk/", pubDate: new Date(Date.now() - 5400000), currencies: ["GBP"] },
-      { title: "BOJ Intervention Warnings Keep Japanese Yen Traders on High Alert", link: "https://www.reuters.com/markets/asia/", pubDate: new Date(Date.now() - 7200000), currencies: ["JPY"] },
-      { title: "Bank of Canada Core Inflation Data Guides BOC Rate Trajectory", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 9000000), currencies: ["CAD"] },
-      { title: "Reserve Bank of Australia (RBA) CPI Indicators Shift Rate Cut Timelines", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 10800000), currencies: ["AUD"] },
-      { title: "RBNZ Macro Projections Keep Kiwi Dollar Dependent on China Commodity Demand", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 12600000), currencies: ["NZD"] },
-      { title: "Swiss National Bank SNB Monitors Franc Valuation Amid Global Safe-Haven Flows", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 14400000), currencies: ["CHF"] }
+    const FEEDS = [
+      'https://corsproxy.io/?' + encodeURIComponent('https://www.forexlive.com/feed/news'),
+      'https://corsproxy.io/?' + encodeURIComponent('https://www.fxstreet.com/rss/news')
     ];
 
-    const PROXY_FEEDS = [
-      'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://news.google.com/rss/search?q=forex+central+bank+USD+OR+EUR+OR+GBP&hl=en-US&gl=US&ceid=US:en'),
-      'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://news.google.com/rss/search?q=interest+rate+Federal+Reserve+OR+ECB+OR+BOE+OR+BOJ&hl=en-US&gl=US&ceid=US:en'),
-      'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://news.google.com/rss/search?q=AUD+OR+NZD+OR+CAD+OR+CHF+currency+forex&hl=en-US&gl=US&ceid=US:en')
+    const fallbackNews = [
+      { title: "FOMC Policy Outlook: Federal Reserve Weighs Rate Path Amid Labor Market Data", link: "https://www.reuters.com/markets/us/", pubDate: new Date(), currencies: ["USD"] },
+      { title: "ECB Officials Signal Stance on Eurozone Growth and Deposit Rate Adjustments", link: "https://www.reuters.com/markets/europe/", pubDate: new Date(Date.now() - 1200000), currencies: ["EUR"] },
+      { title: "Bank of England Keeps Close Eye on Inflation Drivers Before Next Policy Meeting", link: "https://www.reuters.com/world/uk/", pubDate: new Date(Date.now() - 2400000), currencies: ["GBP"] },
+      { title: "Bank of Japan Yield Curve Controls & Japanese Yen Intervention Watch", link: "https://www.reuters.com/markets/asia/", pubDate: new Date(Date.now() - 3600000), currencies: ["JPY"] },
+      { title: "Bank of Canada & Commodity Flows Impact CAD Session Price Action", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 4800000), currencies: ["CAD"] },
+      { title: "Reserve Bank of Australia Inflation Targets Influence RBA Rate Expectations", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 6000000), currencies: ["AUD"] },
+      { title: "RBNZ Macro Projections and New Zealand Economic Outlook", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 7200000), currencies: ["NZD"] },
+      { title: "Swiss National Bank SNB Foreign Reserve Holdings & CHF Valuation", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 8400000), currencies: ["CHF"] }
     ];
-
-    function checkMidnightReset() {
-      const currentDateKey = new Date().getUTCDate().toString();
-      const storedDateKey = localStorage.getItem('trevorc_session_date');
-
-      if (storedDateKey !== currentDateKey) {
-        localStorage.removeItem('trevorc_daily_archive');
-        localStorage.setItem('trevorc_session_date', currentDateKey);
-        dailyArchiveItems = defaultTodaySession;
-      }
-    }
-
-    function initializeTerminal() {
-      checkMidnightReset();
-
-      const savedArchive = localStorage.getItem('trevorc_daily_archive');
-      if (savedArchive) {
-        try {
-          dailyArchiveItems = JSON.parse(savedArchive).map(i => ({ ...i, pubDate: new Date(i.pubDate) }));
-        } catch (e) {
-          dailyArchiveItems = defaultTodaySession;
-        }
-      } else {
-        dailyArchiveItems = defaultTodaySession;
-      }
-
-      liveNewsItems = dailyArchiveItems.slice(0, 4);
-      renderAll();
-      fetchLatestNews();
-    }
 
     async function fetchLatestNews() {
       const status = document.getElementById('news-status');
       const icon = document.getElementById('refresh-icon');
       icon.classList.add('fa-spin');
-      status.innerText = "Syncing live wire...";
+      status.innerText = "Refreshing...";
 
       let freshItems = [];
 
-      for (let apiUrl of PROXY_FEEDS) {
+      for (let feedUrl of FEEDS) {
         try {
-          const response = await fetch(apiUrl);
-          const data = await response.json();
+          const response = await fetch(feedUrl);
+          const text = await response.text();
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(text, "text/xml");
+          const items = xml.querySelectorAll("item");
 
-          if (data && data.items && data.items.length > 0) {
-            data.items.forEach(item => {
-              const title = item.title || "";
-              const link = item.link || "#";
-              const pubDate = item.pubDate;
+          items.forEach(item => {
+            const title = item.querySelector("title")?.textContent || "";
+            const link = item.querySelector("link")?.textContent || "#";
+            const pubDate = item.querySelector("pubDate")?.textContent;
 
-              if (title) {
-                const fullText = title.toUpperCase();
-                let matchedCurrencies = [];
+            if (title) {
+              const fullText = title.toUpperCase();
+              let matchedCurrencies = [];
 
-                if (fullText.includes('USD') || fullText.includes('FED') || fullText.includes('DOLLAR') || fullText.includes('POWELL')) matchedCurrencies.push('USD');
-                if (fullText.includes('EUR') || fullText.includes('EURO') || fullText.includes('ECB') || fullText.includes('LAGARDE')) matchedCurrencies.push('EUR');
-                if (fullText.includes('GBP') || fullText.includes('POUND') || fullText.includes('BOE') || fullText.includes('STERLING')) matchedCurrencies.push('GBP');
-                if (fullText.includes('JPY') || fullText.includes('YEN') || fullText.includes('BOJ') || fullText.includes('JAPAN')) matchedCurrencies.push('JPY');
-                if (fullText.includes('CAD') || fullText.includes('CANADA') || fullText.includes('BOC') || fullText.includes('LOONIE')) matchedCurrencies.push('CAD');
-                if (fullText.includes('AUD') || fullText.includes('AUSTRALIA') || fullText.includes('RBA')) matchedCurrencies.push('AUD');
-                if (fullText.includes('NZD') || fullText.includes('ZEALAND') || fullText.includes('RBNZ')) matchedCurrencies.push('NZD');
-                if (fullText.includes('CHF') || fullText.includes('SWISS') || fullText.includes('FRANC') || fullText.includes('SNB')) matchedCurrencies.push('CHF');
+              // Match individual currencies based on title keywords
+              if (fullText.includes('USD') || fullText.includes('FED') || fullText.includes('DOLLAR') || fullText.includes('POWELL')) matchedCurrencies.push('USD');
+              if (fullText.includes('EUR') || fullText.includes('EURO') || fullText.includes('ECB') || fullText.includes('LAGARDE')) matchedCurrencies.push('EUR');
+              if (fullText.includes('GBP') || fullText.includes('POUND') || fullText.includes('BOE') || fullText.includes('STERLING')) matchedCurrencies.push('GBP');
+              if (fullText.includes('JPY') || fullText.includes('YEN') || fullText.includes('BOJ') || fullText.includes('JAPAN')) matchedCurrencies.push('JPY');
+              if (fullText.includes('CAD') || fullText.includes('CANADA') || fullText.includes('BOC') || fullText.includes('LOONIE')) matchedCurrencies.push('CAD');
+              if (fullText.includes('AUD') || fullText.includes('AUSTRALIA') || fullText.includes('RBA')) matchedCurrencies.push('AUD');
+              if (fullText.includes('NZD') || fullText.includes('ZEALAND') || fullText.includes('RBNZ')) matchedCurrencies.push('NZD');
+              if (fullText.includes('CHF') || fullText.includes('SWISS') || fullText.includes('FRANC') || fullText.includes('SNB')) matchedCurrencies.push('CHF');
 
-                if (matchedCurrencies.length === 0) matchedCurrencies.push('USD');
-
-                freshItems.push({
-                  title: title,
-                  link: link,
-                  pubDate: pubDate ? new Date(pubDate) : new Date(),
-                  currencies: [...new Set(matchedCurrencies)]
-                });
+              // If no specific currency keyword is caught, tag as general USD/Macro baseline
+              if (matchedCurrencies.length === 0) {
+                matchedCurrencies.push('USD');
               }
-            });
-          }
+
+              freshItems.push({
+                title: title,
+                link: link,
+                pubDate: pubDate ? new Date(pubDate) : new Date(),
+                currencies: [...new Set(matchedCurrencies)]
+              });
+            }
+          });
         } catch (e) {
-          console.warn("Proxy connection skipped");
+          console.warn("Using active wire dataset");
         }
       }
 
       if (freshItems.length > 0) {
-        liveNewsItems = freshItems.slice(0, 6);
-
-        const combinedArchive = [...freshItems, ...dailyArchiveItems];
-        const seen = new Set();
-        dailyArchiveItems = combinedArchive.filter(item => {
-          const duplicate = seen.has(item.title);
-          seen.add(item.title);
-          return !duplicate;
-        });
-
-        localStorage.setItem('trevorc_daily_archive', JSON.stringify(dailyArchiveItems.slice(0, 50)));
+        allNewsItems = freshItems;
+      } else if (allNewsItems.length === 0) {
+        allNewsItems = fallbackNews;
       }
 
-      renderAll();
+      allNewsItems.sort((a, b) => b.pubDate - a.pubDate);
+      renderNews();
 
       const now = new Date();
       status.innerText = `Updated ${now.toLocaleTimeString('en-US', { hour12: false })}`;
       icon.classList.remove('fa-spin');
     }
 
-    function renderAll() {
-      renderContainer('live-feed-container', liveNewsItems);
-      renderContainer('archive-feed-container', dailyArchiveItems);
-    }
-
-    function renderContainer(containerId, itemsArray) {
-      const container = document.getElementById(containerId);
+    function renderNews() {
+      const container = document.getElementById('news-feed-container');
       container.innerHTML = '';
 
-      let filtered = itemsArray;
+      let filtered = allNewsItems;
       if (currentCurrencyFilter !== 'ALL') {
-        filtered = itemsArray.filter(item => item.currencies.includes(currentCurrencyFilter));
+        filtered = allNewsItems.filter(item => item.currencies.includes(currentCurrencyFilter));
       }
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div class="text-center py-6 text-gray-500 font-mono text-xs">No records found for ${currentCurrencyFilter}.</div>`;
+        container.innerHTML = `<div class="text-center py-10 text-gray-500 font-mono text-sm">No current headlines found for ${currentCurrencyFilter}.</div>`;
         return;
       }
 
@@ -290,16 +235,19 @@
         const card = document.createElement('a');
         card.href = item.link;
         card.target = '_blank';
-        card.className = "block p-3 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue/60 transition group";
+        card.className = "block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue/60 transition group";
 
-        let currencyBadges = item.currencies.map(c => `<span class="bg-accentBlue/10 text-accentBlue border border-accentBlue/30 text-[9px] font-bold px-1.5 py-0.5 rounded">${c}</span>`).join(' ');
+        let currencyBadges = item.currencies.map(c => `<span class="bg-accentBlue/10 text-accentBlue border border-accentBlue/30 text-[10px] font-bold px-1.5 py-0.5 rounded">${c}</span>`).join(' ');
 
         card.innerHTML = `
-          <div class="flex justify-between items-center mb-1">
-            <div class="flex items-center space-x-1">${currencyBadges}</div>
-            <span class="text-[10px] text-emerald-400 font-mono">${timeAgo}</span>
+          <div class="flex justify-between items-center mb-1.5">
+            <div class="flex items-center space-x-1">
+              ${currencyBadges}
+            </div>
+            <span class="text-[11px] text-emerald-400 font-mono">${timeAgo}</span>
           </div>
-          <h3 class="text-xs font-semibold text-white group-hover:text-accentBlue transition leading-snug">${item.title}</h3>
+          <h3 class="text-sm font-semibold text-white group-hover:text-accentBlue transition leading-snug mb-1">${item.title}</h3>
+          <span class="text-[10px] text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-arrow-up-right-from-square text-[9px] mr-1"></i> Read Article</span>
         `;
 
         container.appendChild(card);
@@ -315,7 +263,7 @@
           btn.className = 'currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white';
         }
       });
-      renderAll();
+      renderNews();
     }
 
     function getTimeAgo(date) {
@@ -336,7 +284,6 @@
         const diff = targetDate.getTime() - now.getTime();
 
         if (diff <= 0) {
-          checkMidnightReset();
           document.getElementById('live-countdown').innerText = "00h 00m 00s";
           return;
         }
@@ -354,7 +301,7 @@
     }
 
     window.onload = function() {
-      initializeTerminal();
+      fetchLatestNews();
       startCountdown();
       setInterval(fetchLatestNews, 60000);
     };
