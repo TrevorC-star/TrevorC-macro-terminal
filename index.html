@@ -45,18 +45,17 @@
       </span>
     </div>
 
-    <!-- Currency Filter Buttons -->
+    <!-- Monitored Assets Indicator -->
     <div class="flex flex-wrap items-center gap-1.5 my-2 sm:my-0">
-      <span class="text-xs text-gray-400 font-medium mr-1">Filter Currency:</span>
-      <button onclick="filterNews('ALL')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-accentBlue text-white border border-accentBlue" data-ccy="ALL">ALL</button>
-      <button onclick="filterNews('USD')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="USD">USD</button>
-      <button onclick="filterNews('EUR')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="EUR">EUR</button>
-      <button onclick="filterNews('GBP')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="GBP">GBP</button>
-      <button onclick="filterNews('JPY')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="JPY">JPY</button>
-      <button onclick="filterNews('CAD')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="CAD">CAD</button>
-      <button onclick="filterNews('AUD')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="AUD">AUD</button>
-      <button onclick="filterNews('NZD')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="NZD">NZD</button>
-      <button onclick="filterNews('CHF')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="CHF">CHF</button>
+      <span class="text-xs text-gray-400 font-medium mr-1">Monitored Currencies:</span>
+      <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">USD</span>
+      <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">EUR</span>
+      <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">GBP</span>
+      <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">JPY</span>
+      <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">CAD</span>
+      <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">AUD</span>
+      <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">NZD</span>
+      <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">CHF</span>
     </div>
   </header>
 
@@ -76,34 +75,40 @@
     </div>
   </section>
 
-  <!-- Main Content Grid -->
+  <!-- Main Grid Layout -->
   <main class="flex-grow p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- LEFT COLUMN: Live News Wire Stream -->
+    <!-- LEFT COLUMN: Live TradingView Fundamental News Stream -->
     <section class="lg:col-span-7 flex flex-col space-y-6">
       <div class="bg-panelBg border border-borderDark rounded-lg p-5 flex-grow flex flex-col">
         <div class="flex justify-between items-center mb-4 pb-3 border-b border-borderDark">
           <div class="flex items-center space-x-2">
             <i class="fa-solid fa-bolt text-accentBlue"></i>
-            <h2 class="text-lg font-bold text-white">Live Fundamental Wire Stream</h2>
+            <h2 class="text-lg font-bold text-white">Live Forex & Macro News Stream</h2>
           </div>
-          <div class="flex items-center space-x-2">
-            <span id="news-status" class="text-xs text-gray-400">Initializing...</span>
-            <button onclick="loadMacroNews(true)" class="bg-accentBlue hover:bg-blue-600 text-white text-xs px-2.5 py-1 rounded flex items-center gap-1 transition">
-              <i id="refresh-icon" class="fa-solid fa-rotate-right"></i> Refresh Wire
-            </button>
-          </div>
+          <span class="text-xs text-emerald-400 font-mono"><i class="fa-solid fa-circle text-[8px] animate-pulse mr-1"></i> Live Feed Connected</span>
         </div>
 
-        <div id="news-feed-container" class="space-y-3 max-h-[620px] overflow-y-auto pr-2 flex-grow">
-          <div class="text-center py-10 text-gray-500 font-mono text-sm animate-pulse">
-            Loading persistent terminal news database...
-          </div>
+        <!-- TradingView Embedded Timeline Widget (Forex & Central Banks) -->
+        <div class="tradingview-widget-container" style="height: 540px; width: 100%;">
+          <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+          {
+            "feedMode": "market",
+            "market": "forex",
+            "colorTheme": "dark",
+            "isTransparent": true,
+            "displayMode": "regular",
+            "width": "100%",
+            "height": "540",
+            "locale": "en"
+          }
+          </script>
         </div>
       </div>
     </section>
 
-    <!-- RIGHT COLUMN: Economic Calendar -->
+    <!-- RIGHT COLUMN: Red-Folder Economic Calendar -->
     <section class="lg:col-span-5 flex flex-col space-y-6">
       <div class="bg-panelBg border border-borderDark rounded-lg p-5">
         <div class="flex justify-between items-center mb-4 pb-3 border-b border-borderDark">
@@ -114,12 +119,12 @@
           <span class="text-xs text-neonRed font-bold bg-neonRed/10 px-2 py-0.5 rounded border border-neonRed/20">G8 High Impact</span>
         </div>
 
-        <div class="tradingview-widget-container" style="height: 520px; width: 100%;">
+        <div class="tradingview-widget-container" style="height: 540px; width: 100%;">
           <div class="tradingview-widget-container__widget"></div>
           <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
           {
             "width": "100%",
-            "height": "520",
+            "height": "540",
             "colorTheme": "dark",
             "isTransparent": true,
             "locale": "en",
@@ -133,188 +138,8 @@
 
   </main>
 
-  <!-- Script Engine -->
+  <!-- Script: Persistent UTC Session Countdown -->
   <script>
-    let allNewsItems = [];
-    let currentFilter = 'ALL';
-
-    const RSS_SOURCES = [
-      'https://news.google.com/rss/search?q=forex+central+bank+USD+OR+EUR+OR+GBP&hl=en-US&gl=US&ceid=US:en',
-      'https://news.google.com/rss/search?q=interest+rate+Federal+Reserve+OR+ECB+OR+BOE+OR+BOJ&hl=en-US&gl=US&ceid=US:en',
-      'https://news.google.com/rss/search?q=AUD+OR+NZD+OR+CAD+OR+CHF+currency+forex&hl=en-US&gl=US&ceid=US:en'
-    ];
-
-    // Load initial headlines instantly from local storage cache
-    function loadCachedNews() {
-      const saved = localStorage.getItem('trevorc_macro_news');
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          allNewsItems = parsed.map(item => ({ ...item, pubDate: new Date(item.pubDate) }));
-          renderNews();
-        } catch (e) {
-          console.error("Error reading cached news", e);
-        }
-      }
-    }
-
-    async function loadMacroNews(isManual = false) {
-      const status = document.getElementById('news-status');
-      const icon = document.getElementById('refresh-icon');
-
-      icon.classList.add('fa-spin');
-      status.innerText = "Checking live feeds...";
-
-      try {
-        let fetchedItems = [];
-
-        for (let targetUrl of RSS_SOURCES) {
-          // Use allorigins to bypass CORS without triggering third-party rate limits
-          const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
-          
-          try {
-            const res = await fetch(proxyUrl);
-            const data = await res.json();
-            
-            if (data && data.contents) {
-              const parser = new DOMParser();
-              const xmlDoc = parser.parseFromString(data.contents, "text/xml");
-              const items = xmlDoc.querySelectorAll("item");
-
-              items.forEach(item => {
-                const title = item.querySelector("title")?.textContent || '';
-                const link = item.querySelector("link")?.textContent || '';
-                const pubDateStr = item.querySelector("pubDate")?.textContent || '';
-
-                if (title) {
-                  fetchedItems.push({
-                    title: title,
-                    link: link,
-                    pubDate: pubDateStr ? new Date(pubDateStr) : new Date()
-                  });
-                }
-              });
-            }
-          } catch (e) {
-            console.warn("Failed fetching source:", targetUrl);
-          }
-        }
-
-        if (fetchedItems.length > 0) {
-          // Deduplicate based on title text
-          const seen = new Set();
-          const uniqueList = [];
-
-          // Merge newly fetched items with existing items
-          const combined = [...fetchedItems, ...allNewsItems];
-
-          combined.forEach(item => {
-            const titleClean = (item.title || '').trim();
-            if (titleClean && !seen.has(titleClean)) {
-              seen.add(titleClean);
-
-              const fullText = titleClean.toUpperCase();
-              let tags = [];
-              ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'NZD', 'CHF'].forEach(ccy => {
-                if (fullText.includes(ccy) || 
-                   (ccy === 'USD' && (fullText.includes('FED') || fullText.includes('INFLATION') || fullText.includes('DOLLAR'))) || 
-                   (ccy === 'EUR' && fullText.includes('ECB')) || 
-                   (ccy === 'GBP' && fullText.includes('BOE')) || 
-                   (ccy === 'JPY' && fullText.includes('BOJ'))) {
-                  if (!tags.includes(ccy)) tags.push(ccy);
-                }
-              });
-
-              uniqueList.push({
-                title: titleClean,
-                link: item.link,
-                pubDate: new Date(item.pubDate),
-                tags: tags.length > 0 ? tags : ['MACRO']
-              });
-            }
-          });
-
-          // Sort descending by pubDate
-          uniqueList.sort((a, b) => b.pubDate - a.pubDate);
-          allNewsItems = uniqueList.slice(0, 50); // Keep top 50 headlines
-
-          // Persist to local storage
-          localStorage.setItem('trevorc_macro_news', JSON.stringify(allNewsItems));
-          renderNews();
-        }
-
-        const now = new Date();
-        status.innerText = `Updated: ${now.toLocaleTimeString('en-US', { hour12: false })} CAT`;
-
-      } catch (err) {
-        console.error(err);
-        status.innerText = "Error refreshing wire";
-      } finally {
-        icon.classList.remove('fa-spin');
-      }
-    }
-
-    function renderNews() {
-      const container = document.getElementById('news-feed-container');
-      container.innerHTML = '';
-
-      let filtered = allNewsItems;
-      if (currentFilter !== 'ALL') {
-        filtered = allNewsItems.filter(item => item.tags.includes(currentFilter));
-      }
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<div class="text-center py-10 text-gray-500 font-mono text-sm">No breaking headlines found for ${currentFilter} right now.</div>`;
-        return;
-      }
-
-      filtered.forEach(item => {
-        const timeAgo = getTimeAgo(item.pubDate);
-        const card = document.createElement('a');
-        card.href = item.link;
-        card.target = '_blank';
-        card.className = "block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue/60 transition group";
-
-        let tagBadges = item.tags.map(t => `<span class="bg-accentBlue/10 text-accentBlue border border-accentBlue/30 text-[10px] font-bold px-1.5 py-0.5 rounded">${t}</span>`).join(' ');
-
-        card.innerHTML = `
-          <div class="flex justify-between items-center mb-1.5">
-            <div class="flex items-center space-x-1">
-              ${tagBadges}
-            </div>
-            <span class="text-[11px] text-emerald-400 font-mono">${timeAgo}</span>
-          </div>
-          <h3 class="text-sm font-semibold text-white group-hover:text-accentBlue transition leading-snug mb-1">${item.title}</h3>
-          <span class="text-[10px] text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-arrow-up-right-from-square text-[9px] mr-1"></i> Read Full Story</span>
-        `;
-
-        container.appendChild(card);
-      });
-    }
-
-    function filterNews(ccy) {
-      currentFilter = ccy;
-      document.querySelectorAll('.currency-filter-btn').forEach(btn => {
-        if (btn.getAttribute('data-ccy') === ccy) {
-          btn.className = 'currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-accentBlue text-white border border-accentBlue';
-        } else {
-          btn.className = 'currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white';
-        }
-      });
-      renderNews();
-    }
-
-    function getTimeAgo(date) {
-      const seconds = Math.floor((new Date() - date) / 1000);
-      if (isNaN(seconds) || seconds < 0) return 'Just now';
-      if (seconds < 60) return `${seconds}s ago`;
-      const minutes = Math.floor(seconds / 60);
-      if (minutes < 60) return `${minutes}m ago`;
-      const hours = Math.floor(minutes / 60);
-      if (hours < 24) return `${hours}h ago`;
-      return `${Math.floor(hours / 24)}d ago`;
-    }
-
     function startCountdown() {
       function update() {
         const now = new Date();
@@ -331,7 +156,7 @@
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
         document.getElementById('live-countdown').innerText = 
-          `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+          `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}s ${seconds.toString().padStart(2, '0')}s`.replace('s ', 'm ');
       }
 
       update();
@@ -339,14 +164,7 @@
     }
 
     window.onload = function() {
-      loadCachedNews(); // Instant load from browser memory
-      loadMacroNews();  // Fetch background updates
       startCountdown();
-      
-      // Auto-poll for new stories every 60 seconds
-      setInterval(() => {
-        loadMacroNews();
-      }, 60000);
     };
   </script>
 </body>
