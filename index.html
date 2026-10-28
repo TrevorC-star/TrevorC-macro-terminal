@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TrevorC Live Macro Terminal</title>
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -24,7 +23,6 @@
       }
     }
   </script>
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body { background-color: #0b0e14; color: #d1d4dc; font-family: 'Inter', sans-serif; }
@@ -35,19 +33,19 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- Top Navigation Header -->
+  <!-- Header -->
   <header class="bg-panelBg border-b border-borderDark px-6 py-4 flex flex-wrap justify-between items-center sticky top-0 z-50">
     <div class="flex items-center space-x-3">
       <i class="fa-solid font-bold text-xl text-accentBlue fa-satellite-dish"></i>
       <h1 class="text-xl font-bold tracking-wider text-white">TREVORC <span class="text-accentBlue">MACRO TERMINAL</span></h1>
       <span class="bg-neonRed/20 text-neonRed text-xs font-semibold px-2.5 py-0.5 rounded border border-neonRed/30 animate-pulse flex items-center gap-1">
-        <span class="w-2 h-2 rounded-full bg-neonRed"></span> LIVE FUNDAMENTAL FEED
+        <span class="w-2 h-2 rounded-full bg-neonRed"></span> LIVE FUNDAMENTAL WIRE
       </span>
     </div>
 
-    <!-- Monitored G8 Currencies Scope -->
+    <!-- Monitored Assets -->
     <div class="flex flex-wrap items-center gap-1.5 my-2 sm:my-0">
-      <span class="text-xs text-gray-400 font-medium mr-1">Monitored Assets:</span>
+      <span class="text-xs text-gray-400 font-medium mr-1">Assets:</span>
       <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">USD</span>
       <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">EUR</span>
       <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">GBP</span>
@@ -59,65 +57,105 @@
     </div>
   </header>
 
-  <!-- High-Impact Live Countdown Banner -->
+  <!-- Countdown Banner -->
   <section class="bg-gradient-to-r from-panelBg via-red-950/20 to-panelBg border-b border-borderDark px-6 py-3">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between text-sm">
       <div class="flex items-center space-x-2">
         <i class="fa-solid fa-triangle-exclamation text-neonRed"></i>
-        <span class="font-bold text-white uppercase tracking-wide">Next High-Impact Event:</span>
-        <span id="next-event-title" class="text-gray-300 font-medium">Red-Folder Macro Catalyst Release</span>
+        <span class="font-bold text-white uppercase tracking-wide">Next Red-Folder Event:</span>
+        <span id="next-event-title" class="text-gray-300 font-medium">Major Central Bank Rate Decision / NFP Catalyst</span>
       </div>
       <div class="flex items-center space-x-4">
-        <span class="text-xs text-gray-400">Countdown:</span>
+        <span class="text-xs text-gray-400">Time Remaining:</span>
         <div id="live-countdown" class="bg-neonRed/10 border border-neonRed/40 text-neonRed px-3 py-1 rounded font-mono font-bold text-sm tracking-widest">
-          --d --h --m --s
+          Loading...
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Main Terminal Grid Layout -->
+  <!-- Main Terminal Layout -->
   <main class="flex-grow p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- LEFT COLUMN: Live News & Fundamental Driver Wire Stream -->
+    <!-- LEFT COLUMN: Interactive Clickable Live News Feeds -->
     <section class="lg:col-span-7 flex flex-col space-y-6">
       <div class="bg-panelBg border border-borderDark rounded-lg p-5 flex-grow flex flex-col">
         <div class="flex justify-between items-center mb-4 pb-3 border-b border-borderDark">
           <div class="flex items-center space-x-2">
             <i class="fa-solid fa-newspaper text-accentBlue"></i>
-            <h2 class="text-lg font-bold text-white">Live Fundamental Wire Stream</h2>
+            <h2 class="text-lg font-bold text-white">Live Fundamental Wire & News Direct Links</h2>
           </div>
-          <span class="text-xs text-gray-400">Reuters | Bloomberg | WSJ | CNBC | FinancialJuice</span>
+          <span class="text-xs text-gray-400">Click headers to open source feeds</span>
         </div>
 
-        <!-- Curated News Feed Container -->
-        <div id="news-container" class="space-y-4 max-h-[600px] overflow-y-auto pr-2 flex-grow">
+        <!-- Clickable News Links Grid / Stream -->
+        <div class="space-y-3 max-h-[600px] overflow-y-auto pr-2">
           
-          <!-- Sample Wire Item 1 -->
-          <div class="p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue/50 transition">
+          <!-- Reuters -->
+          <a href="https://www.reuters.com/markets/currencies/" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
             <div class="flex justify-between items-start mb-1">
-              <span class="text-xs font-bold text-accentBlue uppercase tracking-wider">[Reuters / Global Macro]</span>
-              <span class="text-xs text-gray-500 font-mono">Live Feed Active</span>
+              <span class="text-xs font-bold text-accentBlue uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [REUTERS GLOBAL MARKETS]</span>
+              <span class="text-xs text-emerald-400 font-mono">Live Feed</span>
             </div>
-            <h3 class="text-sm font-semibold text-white mb-1">G8 Central Bank Policy Divergence & Liquidity Flow Tracker</h3>
-            <p class="text-xs text-gray-400">Monitoring real-time fundamental drivers across USD, EUR, GBP, JPY, CAD, AUD, NZD, and CHF pairs.</p>
-          </div>
+            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">Reuters FX & Central Bank Policy Wire</h3>
+            <p class="text-xs text-gray-400">Real-time macro wire covering G8 interest rate outlooks, liquidity flows, and geopolitical drivers.</p>
+          </a>
 
-          <!-- Sample Wire Item 2 -->
-          <div class="p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue/50 transition">
+          <!-- FinancialJuice -->
+          <a href="https://www.financialjuice.com" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
             <div class="flex justify-between items-start mb-1">
-              <span class="text-xs font-bold text-neonAmber uppercase tracking-wider">[FinancialJuice / WSJ]</span>
-              <span class="text-xs text-gray-500 font-mono">Streaming</span>
+              <span class="text-xs font-bold text-neonAmber uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [FINANCIALJUICE BREAKING WIRE]</span>
+              <span class="text-xs text-emerald-400 font-mono">Streaming</span>
             </div>
-            <h3 class="text-sm font-semibold text-white mb-1">Session Liquidity & High-Impact Red-Folder Watch</h3>
-            <p class="text-xs text-gray-400">All news streams initialized for London and New York session overlap execution triggers.</p>
-          </div>
+            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">Real-time Audio & Headline News Stream</h3>
+            <p class="text-xs text-gray-400">Instant audio alerts and headline aggregation for session liquidity sweeps and economic data releases.</p>
+          </a>
+
+          <!-- Bloomberg -->
+          <a href="https://www.bloomberg.com/markets/currencies" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
+            <div class="flex justify-between items-start mb-1">
+              <span class="text-xs font-bold text-purple-400 uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [BLOOMBERG MARKETS]</span>
+              <span class="text-xs text-emerald-400 font-mono">Active</span>
+            </div>
+            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">Bloomberg Currencies & Macro Analysis</h3>
+            <p class="text-xs text-gray-400">Institutional perspective on G8 sovereign debt, currency valuation, and macroeconomic trends.</p>
+          </a>
+
+          <!-- Wall Street Journal -->
+          <a href="https://www.wsj.com/news/markets" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
+            <div class="flex justify-between items-start mb-1">
+              <span class="text-xs font-bold text-blue-400 uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [WALL STREET JOURNAL]</span>
+              <span class="text-xs text-emerald-400 font-mono">Active</span>
+            </div>
+            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">WSJ Markets & Economy Desk</h3>
+            <p class="text-xs text-gray-400">In-depth economic reports, inflation tracking, and Federal Reserve / Central Bank commentary.</p>
+          </a>
+
+          <!-- CNBC -->
+          <a href="https://www.cnbc.com/currencies/" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
+            <div class="flex justify-between items-start mb-1">
+              <span class="text-xs font-bold text-green-400 uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [CNBC CURRENCIES]</span>
+              <span class="text-xs text-emerald-400 font-mono">Active</span>
+            </div>
+            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">CNBC Global Currency Exchange & News</h3>
+            <p class="text-xs text-gray-400">Live market commentary, trading day updates, and cross-rate market volatility reports.</p>
+          </a>
+
+          <!-- Trading Economics -->
+          <a href="https://tradingeconomics.com/currencies" target="_blank" class="block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue transition group">
+            <div class="flex justify-between items-start mb-1">
+              <span class="text-xs font-bold text-amber-400 uppercase tracking-wider group-hover:underline"><i class="fa-solid fa-external-link-alt mr-1"></i> [TRADING ECONOMICS]</span>
+              <span class="text-xs text-emerald-400 font-mono">Active</span>
+            </div>
+            <h3 class="text-sm font-semibold text-white mb-1 group-hover:text-accentBlue transition">Global Indicators & Economic Calendar Hub</h3>
+            <p class="text-xs text-gray-400">Comprehensive macroeconomic indicators, historical data charts, and forecast matrices.</p>
+          </a>
 
         </div>
       </div>
     </section>
 
-    <!-- RIGHT COLUMN: Red-Folder Economic Calendar & Event Feed -->
+    <!-- RIGHT COLUMN: Red-Folder Economic Calendar -->
     <section class="lg:col-span-5 flex flex-col space-y-6">
       <div class="bg-panelBg border border-borderDark rounded-lg p-5">
         <div class="flex justify-between items-center mb-4 pb-3 border-b border-borderDark">
@@ -148,29 +186,28 @@
 
   </main>
 
-  <!-- Script: Dynamic Live Countdown Timer -->
+  <!-- Script: Fixed Persistent Countdown Timer -->
   <script>
     function startCountdown() {
-      // Dynamic target timer (set for next major session catalyst release)
-      const targetDate = new Date();
-      targetDate.setHours(targetDate.getHours() + 6); // Automatically rolling relative countdown
+      // Set target countdown to midnight UTC / next daily macro reset session
+      const now = new Date();
+      const targetDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
 
       function update() {
-        const now = new Date().getTime();
-        const diff = targetDate.getTime() - now;
+        const currentTime = new Date().getTime();
+        const diff = targetDate.getTime() - currentTime;
 
         if (diff <= 0) {
-          document.getElementById('live-countdown').innerText = "RELEASED NOW";
+          document.getElementById('live-countdown').innerText = "SESSION ROLLED OVER";
           return;
         }
 
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
         document.getElementById('live-countdown').innerText = 
-          `${days}d ${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+          `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
       }
 
       update();
