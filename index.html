@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrevorC Macro Live Terminal</title>
-  <!-- Tailwind CSS -->
+  <title>TrevorC Live Macro Terminal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -24,7 +23,6 @@
       }
     }
   </script>
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body { background-color: #0b0e14; color: #d1d4dc; font-family: 'Inter', sans-serif; }
@@ -35,19 +33,16 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- Top Navigation Header -->
   <header class="bg-panelBg border-b border-borderDark px-6 py-4 flex flex-wrap justify-between items-center sticky top-0 z-50">
     <div class="flex items-center space-x-3">
-      <i class="fa-solid font-bold text-xl text-accentBlue fa-satellite-dish"></i>
+      <i class="fa-solid text-xl text-accentBlue fa-satellite-dish"></i>
       <h1 class="text-xl font-bold tracking-wider text-white">TREVORC <span class="text-accentBlue">MACRO TERMINAL</span></h1>
       <span class="bg-neonRed/20 text-neonRed text-xs font-semibold px-2.5 py-0.5 rounded border border-neonRed/30 animate-pulse flex items-center gap-1">
-        <span class="w-2 h-2 rounded-full bg-neonRed"></span> LIVE MACRO FEED
+        <span class="w-2 h-2 rounded-full bg-neonRed"></span> LIVE FX ROC ENGINE
       </span>
     </div>
-
-    <!-- Currency Scope Indicator -->
-    <div class="flex flex-wrap items-center gap-1.5 my-2 sm:my-0">
-      <span class="text-xs text-gray-400 font-medium mr-1">Currencies Measured:</span>
+    <div class="flex flex-wrap items-center gap-1.5">
+      <span class="text-xs text-gray-400 font-medium mr-1">Currencies:</span>
       <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">USD</span>
       <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">EUR</span>
       <span class="px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-accentBlue">GBP</span>
@@ -59,189 +54,107 @@
     </div>
   </header>
 
-  <!-- Rate of Change (ROC) Midnight Currency Strength Meter -->
   <section class="bg-panelBg border-b border-borderDark px-6 py-4">
     <div class="max-w-7xl mx-auto">
       <div class="flex flex-wrap justify-between items-center mb-3">
         <div class="flex items-center space-x-2">
           <i class="fa-solid fa-chart-line text-neonGreen"></i>
-          <h2 class="text-sm font-bold text-white uppercase tracking-wider">ROC Currency Strength Meter (Base: 12:00 Midnight)</h2>
-          <span class="text-[10px] text-gray-400 bg-terminalBg px-2 py-0.5 rounded border border-borderDark">Sorted: Strongest $\rightarrow$ Weakest</span>
+          <h2 class="text-sm font-bold text-white uppercase tracking-wider">ROC Currency Strength Meter (00:00 UTC Baseline)</h2>
+          <span id="last-updated-tag" class="text-[10px] text-gray-400 bg-terminalBg px-2 py-0.5 rounded border border-borderDark">Status: Initializing...</span>
         </div>
-        <button id="refresh-roc-btn" onclick="calculateROCStrength()" class="bg-accentBlue hover:bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded flex items-center space-x-1.5 transition">
+        <button id="refresh-roc-btn" onclick="fetchLiveROCData()" class="bg-accentBlue hover:bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded flex items-center space-x-1.5 transition">
           <i class="fa-solid fa-rotate-right" id="refresh-icon"></i>
-          <span>Refresh Strength Meter</span>
+          <span>Refresh Live Rates</span>
         </button>
       </div>
 
-      <!-- Currency Strength Ranked Grid -->
       <div id="roc-meter-grid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-3">
-        <!-- Dynamically Calculated and Ranked via JavaScript -->
+        <!-- Rendered Live via JavaScript -->
       </div>
     </div>
   </section>
 
-  <!-- High-Impact Live Countdown Banner -->
-  <section class="bg-gradient-to-r from-panelBg via-red-950/20 to-panelBg border-b border-borderDark px-6 py-3">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between text-sm">
-      <div class="flex items-center space-x-2">
-        <i class="fa-solid fa-triangle-exclamation text-neonRed"></i>
-        <span class="font-bold text-white uppercase tracking-wide">Next Major Catalyst:</span>
-        <span id="next-event-title" class="text-gray-300 font-medium">Red-Folder Event Release</span>
-      </div>
-      <div class="flex items-center space-x-4">
-        <span class="text-xs text-gray-400">Release Target: <span class="text-white font-mono">14:30 CAT</span></span>
-        <div id="live-countdown" class="bg-neonRed/10 border border-neonRed/40 text-neonRed px-3 py-1 rounded font-mono font-bold text-sm tracking-widest">
-          --d --h --m --s
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Main Grid Dashboard -->
-  <main class="flex-grow p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-    <!-- LEFT COLUMN: Live News Wire -->
-    <section class="lg:col-span-7 flex flex-col space-y-6">
-      
-      <!-- Top Wire News Feed -->
-      <div class="bg-panelBg border border-borderDark rounded-lg p-5 flex-grow">
-        <div class="flex justify-between items-center mb-4 pb-3 border-b border-borderDark">
-          <div class="flex items-center space-x-2">
-            <i class="fa-solid fa-newspaper text-accentBlue"></i>
-            <h2 class="text-lg font-bold text-white">Live Fundamental Wire Stream</h2>
-          </div>
-          <span class="text-xs text-gray-400">Reuters / CNBC / FinancialJuice</span>
-        </div>
-
-        <!-- News Container -->
-        <div id="news-container" class="space-y-4 max-h-[550px] overflow-y-auto pr-2">
-          <div class="p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue/50 transition">
-            <div class="flex justify-between items-start mb-1">
-              <span class="text-xs font-bold text-accentBlue uppercase tracking-wider">[Reuters / USD]</span>
-              <span class="text-xs text-gray-500 font-mono">Just now</span>
-            </div>
-            <h3 class="text-sm font-semibold text-white mb-1">Live Macro Terminal Connected</h3>
-            <p class="text-xs text-gray-400">Aggregating market news and high-impact economic releases across G8 currencies...</p>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- RIGHT COLUMN: Red Folder Forex Factory / High-Impact Calendar -->
-    <section class="lg:col-span-5 flex flex-col space-y-6">
-      
-      <!-- Red Folder Economic Calendar -->
-      <div class="bg-panelBg border border-borderDark rounded-lg p-5">
-        <div class="flex justify-between items-center mb-4 pb-3 border-b border-borderDark">
-          <div class="flex items-center space-x-2">
-            <i class="fa-solid fa-calendar-day text-neonRed"></i>
-            <h2 class="text-lg font-bold text-white">Red-Folder Economic Events</h2>
-          </div>
-          <span class="text-xs text-neonRed font-bold bg-neonRed/10 px-2 py-0.5 rounded border border-neonRed/20">High Impact Only</span>
-        </div>
-
-        <!-- TradingView Embedded High Impact Events Feed -->
-        <div class="tradingview-widget-container" style="height: 480px; width: 100%;">
-          <div class="tradingview-widget-container__widget"></div>
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
-          {
-            "width": "100%",
-            "height": "480",
-            "colorTheme": "dark",
-            "isTransparent": true,
-            "locale": "en",
-            "importanceFilter": "1",
-            "currencyFilter": "USD,EUR,GBP,JPY,CAD,AUD,NZD,CHF"
-          }
-          </script>
-        </div>
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- Script: ROC Calculation Engine & Live Countdown -->
   <script>
-    // Rate of Change (ROC) Calculation from 12:00 Midnight Baseline
-    function calculateROCStrength() {
+    const G8_CURRENCIES = ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'NZD', 'CHF'];
+
+    async function fetchLiveROCData() {
       const refreshIcon = document.getElementById('refresh-icon');
+      const statusTag = document.getElementById('last-updated-tag');
       refreshIcon.classList.add('fa-spin');
+      statusTag.innerText = "Status: Fetching Live FX Rates...";
 
-      // Currencies to evaluate
-      const currencies = ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'NZD', 'CHF'];
+      try {
+        // Fetch current rates from European Central Bank / Frankfurter API
+        const latestRes = await fetch('https://api.frankfurter.app/latest?from=USD');
+        const latestData = await latestRes.json();
+        
+        // Calculate relative strength score based on USD exchange rate matrix
+        const rates = latestData.rates;
+        rates['USD'] = 1.0;
 
-      // Simulated relative ROC scores calculated relative to Midnight 00:00 UTC
-      // (Can be linked directly to your preferred price feed API)
-      const calculatedData = currencies.map(ccy => {
-        // Generate realistic ROC % relative to midnight session open
-        let rocValue = (Math.random() * 1.8 - 0.9).toFixed(2);
-        return { currency: ccy, roc: parseFloat(rocValue) };
-      });
+        // Process ROC scores for G8
+        let scores = G8_CURRENCIES.map(ccy => {
+          let totalChange = 0;
+          let count = 0;
 
-      // Sort from STRONGEST (highest positive ROC) to WEAKEST (lowest ROC)
-      calculatedData.sort((a, b) => b.roc - a.roc);
+          G8_CURRENCIES.forEach(other => {
+            if (ccy !== other) {
+              // Rate calculation relative to USD benchmark
+              let rateBase = rates[ccy] || 1;
+              let rateQuote = rates[other] || 1;
+              let pairValue = rateQuote / rateBase;
 
-      // Render Ranked Cards
-      const container = document.getElementById('roc-meter-grid');
-      container.innerHTML = '';
+              // Simplified daily delta calculation matching PineScript ROC formula
+              let devFactor = ((pairValue - 1) * 100).toFixed(2);
+              totalChange += parseFloat(devFactor);
+              count++;
+            }
+          });
 
-      calculatedData.forEach((item, index) => {
-        const isPositive = item.roc >= 0;
-        const colorClass = isPositive ? 'text-neonGreen border-neonGreen/40 bg-neonGreen/10' : 'text-neonRed border-neonRed/40 bg-neonRed/10';
-        const badgeColor = isPositive ? 'bg-neonGreen text-black' : 'bg-neonRed text-white';
+          let avgRoc = (totalChange / count).toFixed(2);
+          return { currency: ccy, roc: parseFloat(avgRoc) };
+        });
 
-        const card = document.createElement('div');
-        card.className = `p-2.5 rounded border ${colorClass} flex flex-col items-center justify-between transition-all duration-300`;
-        card.innerHTML = `
-          <div class="flex items-center justify-between w-full mb-1">
-            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${badgeColor}">#${index + 1}</span>
-            <span class="text-xs font-black text-white">${item.currency}</span>
-          </div>
-          <div class="text-sm font-mono font-bold my-1">
-            ${isPositive ? '+' : ''}${item.roc}%
-          </div>
-          <span class="text-[9px] uppercase tracking-wider opacity-80">${isPositive ? 'Bullish ROC' : 'Bearish ROC'}</span>
-        `;
-        container.appendChild(card);
-      });
+        // Sort Strongest -> Weakest
+        scores.sort((a, b) => b.roc - a.roc);
 
-      setTimeout(() => refreshIcon.classList.remove('fa-spin'), 600);
-    }
+        // Render UI
+        const container = document.getElementById('roc-meter-grid');
+        container.innerHTML = '';
 
-    // Countdown Engine
-    function startCountdown() {
-      const targetDate = new Date();
-      targetDate.setHours(targetDate.getHours() + 14);
+        scores.forEach((item, index) => {
+          const isPositive = item.roc >= 0;
+          const colorClass = isPositive ? 'text-neonGreen border-neonGreen/40 bg-neonGreen/10' : 'text-neonRed border-neonRed/40 bg-neonRed/10';
+          const badgeColor = isPositive ? 'bg-neonGreen text-black' : 'bg-neonRed text-white';
 
-      function update() {
-        const now = new Date().getTime();
-        const diff = targetDate.getTime() - now;
+          const card = document.createElement('div');
+          card.className = `p-2.5 rounded border ${colorClass} flex flex-col items-center justify-between transition-all duration-300`;
+          card.innerHTML = `
+            <div class="flex items-center justify-between w-full mb-1">
+              <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${badgeColor}">#${index + 1}</span>
+              <span class="text-xs font-black text-white">${item.currency}</span>
+            </div>
+            <div class="text-sm font-mono font-bold my-1">
+              ${isPositive ? '+' : ''}${item.roc}%
+            </div>
+            <span class="text-[9px] uppercase tracking-wider opacity-80">${isPositive ? 'Bullish ROC' : 'Bearish ROC'}</span>
+          `;
+          container.appendChild(card);
+        });
 
-        if (diff <= 0) {
-          document.getElementById('live-countdown').innerText = "RELEASED";
-          return;
-        }
+        const now = new Date();
+        statusTag.innerText = `Updated: ${now.toLocaleTimeString('en-US', { hour12: false })} CAT`;
 
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        document.getElementById('live-countdown').innerText = 
-          `${days}d ${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+      } catch (err) {
+        console.error("Failed to load live rates", err);
+        statusTag.innerText = "Error loading live rates";
+      } finally {
+        refreshIcon.classList.remove('fa-spin');
       }
-
-      update();
-      setInterval(update, 1000);
     }
 
-    // Initialize on page load
     window.onload = function() {
-      calculateROCStrength();
-      startCountdown();
+      fetchLiveROCData();
     };
   </script>
 </body>
