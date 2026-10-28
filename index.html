@@ -43,18 +43,18 @@
       </span>
     </div>
 
-    <!-- Currency & Asset Pair Selector Buttons -->
+    <!-- Individual G8 Currency Filter Buttons -->
     <div class="flex flex-wrap items-center gap-1.5">
-      <span class="text-xs text-gray-400 font-medium mr-1">Filter Pair / Asset:</span>
-      <button onclick="filterNews('ALL')" class="asset-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-accentBlue text-white border border-accentBlue" data-asset="ALL">ALL</button>
-      <button onclick="filterNews('EURUSD')" class="asset-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-asset="EURUSD">EURUSD</button>
-      <button onclick="filterNews('GBPUSD')" class="asset-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-asset="GBPUSD">GBPUSD</button>
-      <button onclick="filterNews('USDJPY')" class="asset-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-asset="USDJPY">USDJPY</button>
-      <button onclick="filterNews('US30')" class="asset-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-asset="US30">US30</button>
-      <button onclick="filterNews('NAS100')" class="asset-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-asset="NAS100">NAS100</button>
-      <button onclick="filterNews('EURAUD')" class="asset-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-asset="EURAUD">EURAUD</button>
-      <button onclick="filterNews('GBPAUD')" class="asset-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-asset="GBPAUD">GBPAUD</button>
-      <button onclick="filterNews('USDCHF')" class="asset-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-asset="USDCHF">USDCHF</button>
+      <span class="text-xs text-gray-400 font-medium mr-1">Filter Currency:</span>
+      <button onclick="filterNews('ALL')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-accentBlue text-white border border-accentBlue" data-ccy="ALL">ALL</button>
+      <button onclick="filterNews('USD')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="USD">USD</button>
+      <button onclick="filterNews('EUR')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="EUR">EUR</button>
+      <button onclick="filterNews('GBP')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="GBP">GBP</button>
+      <button onclick="filterNews('JPY')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="JPY">JPY</button>
+      <button onclick="filterNews('CAD')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="CAD">CAD</button>
+      <button onclick="filterNews('AUD')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="AUD">AUD</button>
+      <button onclick="filterNews('NZD')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="NZD">NZD</button>
+      <button onclick="filterNews('CHF')" class="currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white" data-ccy="CHF">CHF</button>
     </div>
   </header>
 
@@ -131,7 +131,7 @@
 
   <script>
     let allNewsItems = [];
-    let currentAssetFilter = 'ALL';
+    let currentCurrencyFilter = 'ALL';
 
     const FEEDS = [
       'https://corsproxy.io/?' + encodeURIComponent('https://www.forexlive.com/feed/news'),
@@ -139,13 +139,14 @@
     ];
 
     const fallbackNews = [
-      { title: "EURUSD Technical Price Action & Federal Reserve vs ECB Policy Divergence", link: "https://www.reuters.com/markets/currencies/", pubDate: new Date(), assets: ["EURUSD", "USD"] },
-      { title: "GBPUSD Market Structure Shifts and Bank of England Inflation Outlook", link: "https://www.reuters.com/world/uk/", pubDate: new Date(Date.now() - 1200000), assets: ["GBPUSD", "GBP"] },
-      { title: "USDJPY Session Liquidity Sweeps and Japanese Yen Intervention Watch", link: "https://www.reuters.com/markets/asia/", pubDate: new Date(Date.now() - 2400000), assets: ["USDJPY", "JPY"] },
-      { title: "US30 and NAS100 Equity Index Futures React to Macro Economic Data", link: "https://www.reuters.com/markets/us/", pubDate: new Date(Date.now() - 3600000), assets: ["US30", "NAS100", "USD"] },
-      { title: "EURAUD Cross-Currency Volatility and Commodity Price Fluctuations", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 4800000), assets: ["EURAUD", "EUR", "AUD"] },
-      { title: "GBPAUD Trend Continuations and Session Overlap Liquidity Triggers", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 6000000), assets: ["GBPAUD", "GBP", "AUD"] },
-      { title: "USDCHF Swiss National Bank Policy Updates and Safe Haven Flows", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 7200000), assets: ["USDCHF", "CHF", "USD"] }
+      { title: "FOMC Policy Outlook: Federal Reserve Weighs Rate Path Amid Labor Market Data", link: "https://www.reuters.com/markets/us/", pubDate: new Date(), currencies: ["USD"] },
+      { title: "ECB Officials Signal Stance on Eurozone Growth and Deposit Rate Adjustments", link: "https://www.reuters.com/markets/europe/", pubDate: new Date(Date.now() - 1200000), currencies: ["EUR"] },
+      { title: "Bank of England Keeps Close Eye on Inflation Drivers Before Next Policy Meeting", link: "https://www.reuters.com/world/uk/", pubDate: new Date(Date.now() - 2400000), currencies: ["GBP"] },
+      { title: "Bank of Japan Yield Curve Controls & Japanese Yen Intervention Watch", link: "https://www.reuters.com/markets/asia/", pubDate: new Date(Date.now() - 3600000), currencies: ["JPY"] },
+      { title: "Bank of Canada & Commodity Flows Impact CAD Session Price Action", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 4800000), currencies: ["CAD"] },
+      { title: "Reserve Bank of Australia Inflation Targets Influence RBA Rate Expectations", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 6000000), currencies: ["AUD"] },
+      { title: "RBNZ Macro Projections and New Zealand Economic Outlook", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 7200000), currencies: ["NZD"] },
+      { title: "Swiss National Bank SNB Foreign Reserve Holdings & CHF Valuation", link: "https://www.reuters.com/markets/", pubDate: new Date(Date.now() - 8400000), currencies: ["CHF"] }
     ];
 
     async function fetchLatestNews() {
@@ -171,33 +172,28 @@
 
             if (title) {
               const fullText = title.toUpperCase();
-              let matchedAssets = [];
+              let matchedCurrencies = [];
 
-              // Match specific currency pairs and assets
-              if (fullText.includes('EUR') && fullText.includes('USD')) matchedAssets.push('EURUSD');
-              if (fullText.includes('GBP') && fullText.includes('USD')) matchedAssets.push('GBPUSD');
-              if (fullText.includes('USD') && fullText.includes('JPY')) matchedAssets.push('USDJPY');
-              if (fullText.includes('US30') || fullText.includes('DOW')) matchedAssets.push('US30');
-              if (fullText.includes('NAS100') || fullText.includes('NASDAQ')) matchedAssets.push('NAS100');
-              if (fullText.includes('EUR') && fullText.includes('AUD')) matchedAssets.push('EURAUD');
-              if (fullText.includes('GBP') && fullText.includes('AUD')) matchedAssets.push('GBPAUD');
-              if (fullText.includes('USD') && fullText.includes('CHF')) matchedAssets.push('USDCHF');
+              // Match individual currencies based on title keywords
+              if (fullText.includes('USD') || fullText.includes('FED') || fullText.includes('DOLLAR') || fullText.includes('POWELL')) matchedCurrencies.push('USD');
+              if (fullText.includes('EUR') || fullText.includes('EURO') || fullText.includes('ECB') || fullText.includes('LAGARDE')) matchedCurrencies.push('EUR');
+              if (fullText.includes('GBP') || fullText.includes('POUND') || fullText.includes('BOE') || fullText.includes('STERLING')) matchedCurrencies.push('GBP');
+              if (fullText.includes('JPY') || fullText.includes('YEN') || fullText.includes('BOJ') || fullText.includes('JAPAN')) matchedCurrencies.push('JPY');
+              if (fullText.includes('CAD') || fullText.includes('CANADA') || fullText.includes('BOC') || fullText.includes('LOONIE')) matchedCurrencies.push('CAD');
+              if (fullText.includes('AUD') || fullText.includes('AUSTRALIA') || fullText.includes('RBA')) matchedCurrencies.push('AUD');
+              if (fullText.includes('NZD') || fullText.includes('ZEALAND') || fullText.includes('RBNZ')) matchedCurrencies.push('NZD');
+              if (fullText.includes('CHF') || fullText.includes('SWISS') || fullText.includes('FRANC') || fullText.includes('SNB')) matchedCurrencies.push('CHF');
 
-              // Fallback default tagging if explicit pair isn't in title text
-              if (matchedAssets.length === 0) {
-                if (fullText.includes('EUR')) matchedAssets.push('EURUSD', 'EURAUD');
-                if (fullText.includes('GBP')) matchedAssets.push('GBPUSD', 'GBPAUD');
-                if (fullText.includes('JPY')) matchedAssets.push('USDJPY');
-                if (fullText.includes('AUD')) matchedAssets.push('EURAUD', 'GBPAUD');
-                if (fullText.includes('CHF')) matchedAssets.push('USDCHF');
-                if (fullText.includes('FED') || fullText.includes('DOLLAR') || fullText.includes('US ')) matchedAssets.push('USD', 'US30', 'NAS100', 'EURUSD', 'GBPUSD', 'USDJPY', 'USDCHF');
+              // If no specific currency keyword is caught, tag as general USD/Macro baseline
+              if (matchedCurrencies.length === 0) {
+                matchedCurrencies.push('USD');
               }
 
               freshItems.push({
                 title: title,
                 link: link,
                 pubDate: pubDate ? new Date(pubDate) : new Date(),
-                assets: matchedAssets.length > 0 ? [...new Set(matchedAssets)] : ['EURUSD', 'GBPUSD']
+                currencies: [...new Set(matchedCurrencies)]
               });
             }
           });
@@ -225,12 +221,12 @@
       container.innerHTML = '';
 
       let filtered = allNewsItems;
-      if (currentAssetFilter !== 'ALL') {
-        filtered = allNewsItems.filter(item => item.assets.includes(currentAssetFilter));
+      if (currentCurrencyFilter !== 'ALL') {
+        filtered = allNewsItems.filter(item => item.currencies.includes(currentCurrencyFilter));
       }
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div class="text-center py-10 text-gray-500 font-mono text-sm">No current headlines found for ${currentAssetFilter}.</div>`;
+        container.innerHTML = `<div class="text-center py-10 text-gray-500 font-mono text-sm">No current headlines found for ${currentCurrencyFilter}.</div>`;
         return;
       }
 
@@ -241,12 +237,12 @@
         card.target = '_blank';
         card.className = "block p-4 bg-terminalBg/60 border border-borderDark rounded hover:border-accentBlue/60 transition group";
 
-        let assetBadges = item.assets.map(a => `<span class="bg-accentBlue/10 text-accentBlue border border-accentBlue/30 text-[10px] font-bold px-1.5 py-0.5 rounded">${a}</span>`).join(' ');
+        let currencyBadges = item.currencies.map(c => `<span class="bg-accentBlue/10 text-accentBlue border border-accentBlue/30 text-[10px] font-bold px-1.5 py-0.5 rounded">${c}</span>`).join(' ');
 
         card.innerHTML = `
           <div class="flex justify-between items-center mb-1.5">
             <div class="flex items-center space-x-1">
-              ${assetBadges}
+              ${currencyBadges}
             </div>
             <span class="text-[11px] text-emerald-400 font-mono">${timeAgo}</span>
           </div>
@@ -258,13 +254,13 @@
       });
     }
 
-    function filterNews(asset) {
-      currentAssetFilter = asset;
-      document.querySelectorAll('.asset-filter-btn').forEach(btn => {
-        if (btn.getAttribute('data-asset') === asset) {
-          btn.className = 'asset-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-accentBlue text-white border border-accentBlue';
+    function filterNews(ccy) {
+      currentCurrencyFilter = ccy;
+      document.querySelectorAll('.currency-filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-ccy') === ccy) {
+          btn.className = 'currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-accentBlue text-white border border-accentBlue';
         } else {
-          btn.className = 'asset-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white';
+          btn.className = 'currency-filter-btn px-2 py-0.5 text-xs font-bold rounded bg-panelBg border border-borderDark text-gray-300 hover:text-white';
         }
       });
       renderNews();
